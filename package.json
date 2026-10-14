@@ -2,9 +2,10 @@
   "name": "top-blogapi-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch app.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,14 @@
   },
   "devDependencies": {
     "prisma": "^7.10.0"
+  },
+  "overrides": {
+    "deepmerge-ts": "^8.0.0",
+    "mysql2": "^3.23.1",
+    "hono": "^4.14.0",
+    "@hono/node-server": "^1.20.0",
+    "lodash": "^4.17.24",
+    "valibot": "^1.4.2"
   },
   "allowScripts": {
     "prisma@7.10.0": true,
