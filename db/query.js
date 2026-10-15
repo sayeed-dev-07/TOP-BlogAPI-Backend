@@ -1,4 +1,4 @@
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 
 
 // user related quries
@@ -22,6 +22,14 @@ const createNewUser = async (data) => {
         }
     })
 }
+const getUser = async (username) => {
+    return await prisma.user.findFirst({
+        where: {
+            username
+        }
+    })
+}
+
 
 // post related quries
 const createNewPost = async (data) => {
@@ -84,4 +92,4 @@ const deleteComment = async (id) => {
     })
 }
 
-export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment }
+export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment, getUser }

@@ -1,5 +1,9 @@
+import 'dotenv/config';
 import express from "express";
 import cors from 'cors';
+import { login, registerUser } from "./controllers/user.js";
+
+
 
 const app = express()
 
@@ -17,19 +21,20 @@ app.get('/', (req, res) => {
         message: "Hello From the main page"
     })
 })
-app.get('/:anything', (req, res) => {
-    res.status(200).json({
-        message: `hello from ${req.params.anything}`
+app.get('/register', (req, res) => {
+    res.json({
+        message: 'hello from register page'
     })
 })
 
-app.get('/test', (req, res) => {
-    res.status(200).json({
-        message: "Hello From the test page"
+app.post('/register', registerUser)
+
+app.get('/login', (req, res) => {
+    res.json({
+        message: 'hello from login page'
     })
 })
-
-
+app.post('/login', login)
 app.listen(3000, () => {
     console.log('Running Sucessfully on port 3000');
 })
