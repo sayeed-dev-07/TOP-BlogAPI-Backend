@@ -1,8 +1,6 @@
 import { isUniqueUser, createNewUser, getUser } from "../db/query.js";
 import bcrypt from "bcryptjs";
-
-
-
+import jwt from 'jsonwebtoken';
 
 const registerUser = async (req, res) => {
     try {
@@ -30,19 +28,45 @@ const registerUser = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
-    const exist = await isUniqueUser(username)
-    if (exist) {
-        return res.json('username or password incorrect!')
+    try {
+        const { username, password } = req.body;
+
+        // Check if the user exists
+        const exist = await isUniqueUser(username);
+        if (exist) {
+            return res.status(401).json({ message: 'username or password incorrect!' });
+        }
+
+        // Fetch user and compare password
+        const user = await getUser(username);
+        const compare = await bcrypt.compare(password, user.password);
+
+        if (!compare) {
+            return res.status(401).json({ message: 'username or password incorrect!' });
+        }
+
+        // 1. Create the JWT payload using the database user details
+        const payload = {
+            id: user.id,
+            username: user.username,
+            admin: user.admin
+        };
+
+        const jwtSecret = process.env.JWT_SECRET;
+
+        const token = jwt.sign(payload, jwtSecret, {
+            expiresIn: '2d'
+        });
+
+        return res.status(200).json({
+            message: 'successfully logged in',
+            token: token
+        });
+
+    } catch (error) {
+        console.error("Login error:", error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
-    const user = await getUser(username)
-    const compare = await bcrypt.compare(password, user.password)
-    if (!compare) {
-        return res.json('username or password incorrect!')
-    }
-    return res.json({
-        message: 'successfully logged in'
-    })
 }
 
 

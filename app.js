@@ -2,12 +2,9 @@ import 'dotenv/config';
 import express from "express";
 import cors from 'cors';
 import { login, registerUser } from "./controllers/user.js";
-
-
+import { verifyAuth } from './middlewares/jwtAuth.js';
 
 const app = express()
-
-
 
 app.use(cors());
 app.use(express.json());
@@ -19,6 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
     res.status(200).json({
         message: "Hello From the main page"
+    })
+})
+app.get('/user', verifyAuth, (req, res) => {
+    res.status(200).json({
+        message: "Hello From the user page"
     })
 })
 app.get('/register', (req, res) => {
