@@ -1,6 +1,8 @@
 import express from "express";
 import cors from 'cors';
+
 const app = express()
+
 
 
 app.use(cors());
@@ -18,6 +20,12 @@ app.get('/', (req, res) => {
 app.get('/:anything', (req, res) => {
     res.status(200).json({
         message: `hello from ${req.params.anything}`
+    })
+})
+
+app.get('/test', (req, res) => {
+    res.status(200).json({
+        message: "Hello From the test page"
     })
 })
 

@@ -83,3 +83,5 @@ const deleteComment = async (id) => {
         }
     })
 }
+
+export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment }
