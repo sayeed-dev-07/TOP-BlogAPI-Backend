@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from "express";
 import cors from 'cors';
-import { login, registerUser } from "./controllers/user.js";
+import { loginControl, registerUserControl } from "./controllers/user.js";
 import { verifyAuth } from './middlewares/jwtAuth.js';
 
 import { postRoutes } from './routes/post.js';
@@ -28,14 +28,14 @@ app.get('/register', (req, res) => {
     })
 })
 
-app.post('/register', registerUser)
+app.post('/register', registerUserControl)
 
 app.get('/login', (req, res) => {
     res.json({
         message: 'hello from login page'
     })
 })
-app.post('/login', login)
+app.post('/login', loginControl)
 
 app.use('/post', verifyAuth, postRoutes)
 app.listen(3000, () => {

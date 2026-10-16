@@ -85,7 +85,7 @@ const publishPost = async (id) => {
 // comment related quries
 
 const postComment = async (data) => {
-    await prisma.comment.create({
+    return await prisma.comment.create({
         data: {
             content: data.content,
             authorId: data.authorId,
@@ -93,6 +93,22 @@ const postComment = async (data) => {
         }
     })
 }
+const editComment = async (content) => {
+    await prisma.comment.update({
+        data: {
+            content
+        }
+    })
+}
+
+const commentExists = async (id) => {
+    return await prisma.comment.findFirst({
+        where: {
+            id
+        }
+    })
+}
+
 const deleteComment = async (id) => {
     await prisma.comment.delete({
         where: {
@@ -101,4 +117,4 @@ const deleteComment = async (id) => {
     })
 }
 
-export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment, getUser, postExists }
+export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment, getUser, postExists, editComment, commentExists }

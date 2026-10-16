@@ -1,6 +1,6 @@
 import { createNewPost, deletePost, editExistingPost, postExists } from "../db/query.js";
 
-const createPost = async (req, res, next) => {
+const createPostControl = async (req, res, next) => {
     const { title, content } = req.body;
     const authorId = req.user.id;
     if (!title || !content) {
@@ -19,7 +19,7 @@ const createPost = async (req, res, next) => {
         }
 
         return res.status(400).json({
-            message: 'Something went wrong creating the post!'
+            message: 'some fields are missing or invalid'
         });
     } catch (error) {
 
@@ -27,7 +27,7 @@ const createPost = async (req, res, next) => {
     }
 }
 
-const editPost = async (req, res, next) => {
+const editPostControl = async (req, res, next) => {
     const data = req.body;
     const id = parseInt(req.params.postId);
     const exits = await postExists(id)
@@ -58,12 +58,12 @@ const deletePostControl = async (req, res, next) => {
     }
     try {
         await deletePost(postId)
-        res.json({
-            message: `Delete post associated with id ${postId}`
+        return res.json({
+            message: `Deleted post associated with id ${postId}`
         })
     } catch (error) {
         next(error)
     }
 }
 
-export { createPost, editPost, deletePostControl };
+export { createPostControl, editPostControl, deletePostControl };

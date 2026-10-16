@@ -2,7 +2,7 @@ import { isUniqueUser, createNewUser, getUser } from "../db/query.js";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 
-const registerUser = async (req, res) => {
+const registerUserControl = async (req, res) => {
     try {
         let { username, password } = req.body;
         password = await bcrypt.hash(password, 12)
@@ -27,7 +27,7 @@ const registerUser = async (req, res) => {
     }
 }
 
-const login = async (req, res) => {
+const loginControl = async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -45,7 +45,6 @@ const login = async (req, res) => {
             return res.status(401).json({ message: 'username or password incorrect!' });
         }
 
-        // 1. Create the JWT payload using the database user details
         const payload = {
             id: user.id,
             username: user.username,
@@ -70,4 +69,4 @@ const login = async (req, res) => {
 }
 
 
-export { registerUser, login };
+export { registerUserControl, loginControl };
