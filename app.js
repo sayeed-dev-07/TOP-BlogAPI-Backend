@@ -3,6 +3,9 @@ import express from "express";
 import cors from 'cors';
 import { login, registerUser } from "./controllers/user.js";
 import { verifyAuth } from './middlewares/jwtAuth.js';
+prisma
+import { postRoutes } from './routes/post.js';
+import { prisma } from './lib/prisma.js';
 
 const app = express()
 
@@ -37,6 +40,14 @@ app.get('/login', (req, res) => {
     })
 })
 app.post('/login', login)
+
+app.get('/all', async (req, res) => {
+    const data = await prisma.post.findMany()
+    res.json({
+        data
+    })
+})
+app.use('/post', verifyAuth, postRoutes)
 app.listen(3000, () => {
     console.log('Running Sucessfully on port 3000');
 })

@@ -33,7 +33,7 @@ const getUser = async (username) => {
 
 // post related quries
 const createNewPost = async (data) => {
-    await prisma.post.create({
+    return await prisma.post.create({
         data: {
             title: data.title,
             content: data.content,
