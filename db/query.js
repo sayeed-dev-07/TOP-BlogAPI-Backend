@@ -41,15 +41,24 @@ const createNewPost = async (data) => {
         }
     })
 }
+const postExists = async (id) => {
+    return await prisma.post.findFirst({
+        where: {
+            id
+        }
+    })
+}
+
 
 const editExistingPost = async (id, data) => {
-    await prisma.post.update({
+    const { title, content } = data;
+    return await prisma.post.update({
         where: {
             id
         },
         data: {
-            content: data.content,
-            title: data.title,
+            ...(title && { title }),
+            ...(content && { content }),
         }
     })
 }
@@ -92,4 +101,4 @@ const deleteComment = async (id) => {
     })
 }
 
-export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment, getUser }
+export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment, getUser, postExists }
