@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { createPost, deletePostControl, editPost } from "../controllers/post.js";
+import { isAdmin } from "../middlewares/adminAuth.js";
 
 const postRoutes = Router()
 
@@ -9,14 +10,14 @@ postRoutes.get('/', (req, res) => {
     })
 })
 
-postRoutes.post('/', createPost)
-postRoutes.get('/edit', (req, res) => {
+postRoutes.post('/', isAdmin, createPost)
+postRoutes.get('/edit', isAdmin, (req, res) => {
     res.json({
         message: 'hello from post edit page'
     })
 })
-postRoutes.patch('/edit/:postId', editPost)
-postRoutes.delete('/delete/:postId', deletePostControl)
+postRoutes.patch('/edit/:postId', isAdmin, editPost)
+postRoutes.delete('/delete/:postId', isAdmin, deletePostControl)
 
 
 

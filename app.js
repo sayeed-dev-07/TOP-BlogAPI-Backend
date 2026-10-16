@@ -21,11 +21,7 @@ app.get('/', (req, res) => {
         message: "Hello From the main page"
     })
 })
-app.get('/user', verifyAuth, (req, res) => {
-    res.status(200).json({
-        message: "Hello From the user page"
-    })
-})
+
 app.get('/register', (req, res) => {
     res.json({
         message: 'hello from register page'
