@@ -28,10 +28,16 @@ const editCommentControl = async (req, res, next) => {
     const { content } = req.body;
     const commentId = parseInt(req.params.commentId);
     const exist = await commentExists(commentId)
+
     if (!exist) {
         return res.status(404).json({
             message: `no comment found with id ${commentId}`
         })
+    }
+    if (typeof content === 'undefined') {
+        return res.status(403).json({
+            message: "you must provide 'content' field",
+        });
     }
     if (exist.authorId !== req.user.id) {
         return res.status(403).json({
@@ -39,7 +45,7 @@ const editCommentControl = async (req, res, next) => {
         });
     }
     try {
-        await editComment(content)
+        await editComment(content, commentId)
         return res.status(200).json({
             message: 'successfully edited the comment'
         })

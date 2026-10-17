@@ -56,6 +56,13 @@ const editPostControl = async (req, res, next) => {
             message: `no post found with id ${id}`
         })
     }
+    const { title, content } = data;
+
+    if (title === undefined && content === undefined) {
+        return res.status(400).json({
+            message: 'At least one field (title or content) is required',
+        });
+    }
     try {
         const updatedPost = await editExistingPost(id, data)
         return res.status(200).json({

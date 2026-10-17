@@ -112,10 +112,13 @@ const postComment = async (data) => {
         }
     })
 }
-const editComment = async (content) => {
-    await prisma.comment.update({
+const editComment = async (content, id) => {
+    return await prisma.comment.update({
         data: {
             content
+        },
+        where: {
+            id
         }
     })
 }
