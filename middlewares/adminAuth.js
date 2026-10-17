@@ -1,10 +1,18 @@
+
 const isAdmin = (req, res, next) => {
-    if (req.user.admin) {
-        return next()
+    if (!req.user) {
+        return res.status(401).json({
+            message: "Authentication required",
+        });
     }
-    res.status(401).json({
-        message: 'you are not authorized to access this resources.'
-    })
-}
+
+    if (!req.user.admin) {
+        return res.status(403).json({
+            message: "Admin access required",
+        });
+    }
+
+    next();
+};
 
 export { isAdmin };

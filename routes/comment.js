@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { deleteCommentControl, postCommentControl, editCommentControl } from "../controllers/comment.js";
+import { deleteCommentControl, postCommentControl, editCommentControl, getAllCommentControl } from "../controllers/comment.js";
+import { verifyAuth } from "../middlewares/jwtAuth.js";
 
 const commentRoute = Router({ mergeParams: true });
 
-commentRoute.get('/', postCommentControl)
-commentRoute.post('/', postCommentControl)
-commentRoute.patch('/:commentId', editCommentControl)
-commentRoute.delete('/:commentId', deleteCommentControl)
+commentRoute.get('/', getAllCommentControl)
+commentRoute.post('/', verifyAuth, postCommentControl)
+commentRoute.patch('/:commentId', verifyAuth, editCommentControl)
+commentRoute.delete('/:commentId', verifyAuth, deleteCommentControl)
 
 export { commentRoute }

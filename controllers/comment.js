@@ -33,6 +33,11 @@ const editCommentControl = async (req, res, next) => {
             message: `no comment found with id ${commentId}`
         })
     }
+    if (exist.authorId !== req.user.id) {
+        return res.status(403).json({
+            message: "You cannot modify another user's comment",
+        });
+    }
     try {
         await editComment(content)
         return res.status(200).json({
@@ -50,6 +55,11 @@ const deleteCommentControl = async (req, res, next) => {
         return res.status(404).json({
             message: `no comment found with id ${commentId}`
         })
+    }
+    if (exist.authorId !== req.user.id) {
+        return res.status(403).json({
+            message: "You cannot delete another user's comment",
+        });
     }
     try {
         await deleteComment(commentId)

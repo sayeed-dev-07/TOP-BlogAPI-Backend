@@ -1,8 +1,10 @@
 import jwt from 'jsonwebtoken';
 
+import { prisma } from '../lib/prisma.js';
+
 const jwtSecret = process.env.JWT_SECRET;
 
-const verifyAuth = (req, res, next) => {
+const verifyAuth = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({
@@ -12,6 +14,18 @@ const verifyAuth = (req, res, next) => {
     const token = authHeader.split(' ')[1];
     try {
         const payload = jwt.verify(token, jwtSecret);
+        const user = await prisma.user.findUnique({
+            where: {
+                id: payload.id,
+            },
+        });
+
+        if (!user) {
+            return res.status(401).json({
+                message: 'User no longer exists. Please log in again.',
+            });
+        }
+
         req.user = payload;
         next();
     } catch (err) {
