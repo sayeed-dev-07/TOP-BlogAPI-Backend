@@ -1,4 +1,24 @@
-import { createNewPost, deletePost, editExistingPost, postExists } from "../db/query.js";
+import { createNewPost, deletePost, editExistingPost, getAllPost, getPostViaId, postExists } from "../db/query.js";
+
+
+const getAPostControl = async (req, res, next) => {
+    const id = parseInt(req.params.postId)
+    const exists = await postExists(id)
+    if (!exists) {
+        return res.status(404).json({
+            message: `no post found with id ${id}`
+        })
+    }
+    try {
+        const data = await getPostViaId(id)
+        return res.status(200).json({
+            data
+        })
+    } catch (error) {
+        next(error)
+    }
+
+}
 
 const createPostControl = async (req, res, next) => {
     const { title, content } = req.body;
@@ -66,4 +86,12 @@ const deletePostControl = async (req, res, next) => {
     }
 }
 
-export { createPostControl, editPostControl, deletePostControl };
+const getAllPostControl = async (req, res) => {
+    const posts = await getAllPost();
+    res.status(200).json({
+        posts
+    })
+
+}
+
+export { createPostControl, editPostControl, deletePostControl, getAllPostControl, getAPostControl };

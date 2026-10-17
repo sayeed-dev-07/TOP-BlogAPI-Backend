@@ -3,8 +3,9 @@ import { deleteCommentControl, postCommentControl, editCommentControl } from "..
 
 const commentRoute = Router({ mergeParams: true });
 
+commentRoute.get('/', postCommentControl)
 commentRoute.post('/', postCommentControl)
-commentRoute.patch('/', editCommentControl)
+commentRoute.patch('/:commentId', editCommentControl)
 commentRoute.delete('/:commentId', deleteCommentControl)
 
 export { commentRoute }

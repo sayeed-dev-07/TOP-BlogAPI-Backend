@@ -1,8 +1,8 @@
-import { commentExists, deleteComment, editComment, postComment, postExists } from "../db/query.js";
+import { commentExists, deleteComment, editComment, getCommentsByPost, postComment, postExists } from "../db/query.js";
 
 const postCommentControl = async (req, res, next) => {
     const { content } = req.body
-    const postId = req.params.postId;
+    const postId = parseInt(req.params.postId);
     const exist = await postExists(postId)
     const authorId = req.user.id;
     if (!exist) {
@@ -25,7 +25,8 @@ const postCommentControl = async (req, res, next) => {
     }
 }
 const editCommentControl = async (req, res, next) => {
-    const { content, commentId } = req.body;
+    const { content } = req.body;
+    const commentId = parseInt(req.params.commentId);
     const exist = await commentExists(commentId)
     if (!exist) {
         return res.status(404).json({
@@ -43,7 +44,7 @@ const editCommentControl = async (req, res, next) => {
     }
 }
 const deleteCommentControl = async (req, res, next) => {
-    const commentId = req.params.commentId;
+    const commentId = parseInt(req.params.commentId);
     const exist = await commentExists(commentId)
     if (!exist) {
         return res.status(404).json({
@@ -60,4 +61,22 @@ const deleteCommentControl = async (req, res, next) => {
     }
 }
 
-export { postCommentControl, editCommentControl, deleteCommentControl }
+const getAllCommentControl = async (req, res, next) => {
+    const postId = parseInt(req.params.postId);
+    const exists = await postExists(postId)
+    if (!exists) {
+        return res.status(404).json({
+            message: `no post found with id ${postId}`
+        })
+    }
+    try {
+        const comments = await getCommentsByPost(postId)
+        return res.status(200).json({
+            data: comments
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export { postCommentControl, editCommentControl, deleteCommentControl, getAllCommentControl }

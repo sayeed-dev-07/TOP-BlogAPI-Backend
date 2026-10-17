@@ -37,7 +37,7 @@ app.get('/login', (req, res) => {
 })
 app.post('/login', loginControl)
 
-app.use('/post', verifyAuth, postRoutes)
+app.use('/posts', verifyAuth, postRoutes)
 app.listen(3000, () => {
     console.log('Running Sucessfully on port 3000');
 })

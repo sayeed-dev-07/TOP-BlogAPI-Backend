@@ -32,6 +32,14 @@ const getUser = async (username) => {
 
 
 // post related quries
+const getPostViaId = async (id) => {
+    return await prisma.post.findFirst({
+        where: {
+            id
+        }
+    })
+}
+
 const createNewPost = async (data) => {
     return await prisma.post.create({
         data: {
@@ -81,8 +89,19 @@ const publishPost = async (id) => {
     })
 }
 
+const getAllPost = async () => {
+    return await prisma.post.findMany()
+}
 
 // comment related quries
+
+const getCommentsByPost = async (postId) => {
+    return await prisma.comment.findMany({
+        where: {
+            postId
+        }
+    })
+}
 
 const postComment = async (data) => {
     return await prisma.comment.create({
@@ -117,4 +136,4 @@ const deleteComment = async (id) => {
     })
 }
 
-export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment, getUser, postExists, editComment, commentExists }
+export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment, getUser, postExists, editComment, commentExists, getCommentsByPost, getAllPost, getPostViaId }

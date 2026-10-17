@@ -1,26 +1,23 @@
 import { Router } from "express";
-import { createPostControl, deletePostControl, editPostControl } from "../controllers/post.js";
+import { createPostControl, deletePostControl, editPostControl, getAllPostControl } from "../controllers/post.js";
 import { isAdmin } from "../middlewares/adminAuth.js";
 import { commentRoute } from "./comment.js";
 
 
 const postRoutes = Router()
 
-postRoutes.get('/', (req, res) => {
+postRoutes.get('/', getAllPostControl)
+postRoutes.get('/:postId',  (req, res) => {
     res.json({
-        message: 'hello from post routes'
+        message: 'here ppl will see the individual post in details with comments'
     })
 })
 
 postRoutes.post('/', isAdmin, createPostControl)
-postRoutes.get('/edit', isAdmin, (req, res) => {
-    res.json({
-        message: 'hello from post edit page'
-    })
-})
-postRoutes.patch('/:postId/edit', isAdmin, editPostControl)
-postRoutes.delete('/:postId/delete', isAdmin, deletePostControl)
-postRoutes.use('/:postId/comment', commentRoute);
+
+postRoutes.patch('/:postId', isAdmin, editPostControl)
+postRoutes.delete('/:postId', isAdmin, deletePostControl)
+postRoutes.use('/:postId/', commentRoute);
 
 
 
