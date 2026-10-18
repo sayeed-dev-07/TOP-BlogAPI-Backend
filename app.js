@@ -38,8 +38,12 @@ app.get('/login', (req, res) => {
 app.post('/login', loginControl)
 
 app.use('/posts', postRoutes)
-app.listen(3000, () => {
-    console.log('Running Sucessfully on port 3000');
-})
+const PORT = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Running Successfully on port ${PORT}`);
+    });
+}
 
 export default app;
