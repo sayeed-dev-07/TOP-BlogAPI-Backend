@@ -41,3 +41,5 @@ app.use('/posts', postRoutes)
 app.listen(3000, () => {
     console.log('Running Sucessfully on port 3000');
 })
+
+export default app;
