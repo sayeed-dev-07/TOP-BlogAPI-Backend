@@ -20,7 +20,6 @@ model User {
   admin     Boolean   @default(false)
   posts     Post[]
   comments  Comment[]
-
   @@map("users")
 }
 
@@ -29,12 +28,12 @@ model Post {
   title     String
   content   String
   createdAt DateTime  @default(now())
+  imgLink   String
   updatedAt DateTime  @updatedAt
   author    User      @relation(fields: [authorId], references: [id])
   authorId  Int
   comments  Comment[]
   published Boolean   @default(false)
-
   @@map("posts")
 }
 
@@ -48,4 +47,5 @@ model Comment {
   authorId  Int
 
   @@map("comments")
+
 }
