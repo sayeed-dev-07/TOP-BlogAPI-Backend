@@ -21,15 +21,15 @@ const getAPostControl = async (req, res, next) => {
 }
 
 const createPostControl = async (req, res, next) => {
-    const { title, content } = req.body;
+    const { title, content, imgLink } = req.body;
     const authorId = req.user.id;
-    if (!title || !content) {
+    if (!title || !content || !imgLink) {
         return res.status(400).json({
-            message: 'Title and content are required!'
+            message: 'Title and content and img are required!'
         });
     }
     try {
-        const newPost = await createNewPost({ title, content, authorId });
+        const newPost = await createNewPost({ title, content, authorId , imgLink});
 
         if (newPost) {
             return res.status(201).json({
@@ -56,11 +56,11 @@ const editPostControl = async (req, res, next) => {
             message: `no post found with id ${id}`
         })
     }
-    const { title, content } = data;
+    const { title, content, imgLink } = data;
 
-    if (title === undefined && content === undefined) {
+    if (title === undefined && content === undefined && imgLink === undefined) {
         return res.status(400).json({
-            message: 'At least one field (title or content) is required',
+            message: 'At least one field (title or content or imglink) is required',
         });
     }
     try {
