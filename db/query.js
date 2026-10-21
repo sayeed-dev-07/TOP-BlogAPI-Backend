@@ -45,7 +45,8 @@ const createNewPost = async (data) => {
         data: {
             title: data.title,
             content: data.content,
-            authorId: data.authorId
+            authorId: data.authorId,
+            imgLink: data.imgLink
         }
     })
 }
@@ -59,7 +60,7 @@ const postExists = async (id) => {
 
 
 const editExistingPost = async (id, data) => {
-    const { title, content } = data;
+    const { title, content, imgLink } = data;
     return await prisma.post.update({
         where: {
             id
@@ -67,6 +68,7 @@ const editExistingPost = async (id, data) => {
         data: {
             ...(title && { title }),
             ...(content && { content }),
+            ...(imgLink && { imgLink }),
         }
     })
 }
