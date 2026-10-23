@@ -88,6 +88,16 @@ const publishPost = async (id) => {
         }
     })
 }
+const unPublishPost = async (id) => {
+    await prisma.post.update({
+        where: {
+            id
+        },
+        data: {
+            published: false
+        }
+    })
+}
 
 const getAllPost = async () => {
     return await prisma.post.findMany()
@@ -139,4 +149,4 @@ const deleteComment = async (id) => {
     })
 }
 
-export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment, getUser, postExists, editComment, commentExists, getCommentsByPost, getAllPost, getPostViaId }
+export { createNewUser, isUniqueUser, createNewPost, editExistingPost, deletePost, publishPost, postComment, deleteComment, getUser, postExists, editComment, commentExists, getCommentsByPost, getAllPost, getPostViaId, unPublishPost }

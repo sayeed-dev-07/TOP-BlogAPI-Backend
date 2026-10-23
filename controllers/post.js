@@ -1,4 +1,4 @@
-import { createNewPost, deletePost, editExistingPost, getAllPost, getPostViaId, postExists } from "../db/query.js";
+import { createNewPost, deletePost, editExistingPost, getAllPost, getPostViaId, postExists, unPublishPost } from "../db/query.js";
 
 
 const getAPostControl = async (req, res, next) => {
@@ -101,4 +101,23 @@ const getAllPostControl = async (req, res) => {
 
 }
 
-export { createPostControl, editPostControl, deletePostControl, getAllPostControl, getAPostControl };
+const unPublishPostControl = async (req, res, next) => {
+    const { postId } = req.params;
+    const exists = await postExists(postId)
+    if (!exists) {
+        return res.status(404).json({
+            message: `no post found with id ${postId}`
+        })
+    }
+    try {
+        await unPublishPost(postId);
+        return res.status(200).json({
+            message: 'Post unpublished successfully'
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+export { createPostControl, editPostControl, deletePostControl, getAllPostControl, getAPostControl, unPublishPostControl };
