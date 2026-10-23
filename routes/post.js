@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createPostControl, deletePostControl, editPostControl, getAllPostControl, getAPostControl, unPublishPostControl } from "../controllers/post.js";
+import { createPostControl, deletePostControl, editPostControl, getAllPostControl, getAPostControl, publishPostControl, unPublishPostControl } from "../controllers/post.js";
 import { isAdmin } from "../middlewares/adminAuth.js";
 import { commentRoute } from "./comment.js";
 import { verifyAuth } from "../middlewares/jwtAuth.js";
@@ -15,6 +15,7 @@ postRoutes.post('/', verifyAuth, isAdmin, createPostControl)
 postRoutes.patch('/:postId', verifyAuth, isAdmin, editPostControl)
 postRoutes.delete('/:postId', verifyAuth, isAdmin, deletePostControl)
 postRoutes.patch('/:postId/unpublish', verifyAuth, isAdmin, unPublishPostControl)
+postRoutes.patch('/:postId/publish', verifyAuth, isAdmin, publishPostControl)
 postRoutes.use('/:postId/comments', commentRoute);
 
 

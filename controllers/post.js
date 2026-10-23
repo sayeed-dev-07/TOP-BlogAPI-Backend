@@ -1,4 +1,4 @@
-import { createNewPost, deletePost, editExistingPost, getAllPost, getPostViaId, postExists, unPublishPost } from "../db/query.js";
+import { createNewPost, deletePost, editExistingPost, getAllPost, getPostViaId, postExists, publishPost, unPublishPost } from "../db/query.js";
 
 
 const getAPostControl = async (req, res, next) => {
@@ -29,7 +29,7 @@ const createPostControl = async (req, res, next) => {
         });
     }
     try {
-        const newPost = await createNewPost({ title, content, authorId , imgLink});
+        const newPost = await createNewPost({ title, content, authorId, imgLink });
 
         if (newPost) {
             return res.status(201).json({
@@ -118,6 +118,23 @@ const unPublishPostControl = async (req, res, next) => {
         next(error)
     }
 }
+const publishPostControl = async (req, res, next) => {
+    const { postId } = req.params;
+    const exists = await postExists(postId)
+    if (!exists) {
+        return res.status(404).json({
+            message: `no post found with id ${postId}`
+        })
+    }
+    try {
+        await publishPost(postId);
+        return res.status(200).json({
+            message: 'Post published successfully'
+        });
+    } catch (error) {
+        next(error)
+    }
+}
 
 
-export { createPostControl, editPostControl, deletePostControl, getAllPostControl, getAPostControl, unPublishPostControl };
+export { createPostControl, editPostControl, deletePostControl, getAllPostControl, getAPostControl, unPublishPostControl, publishPostControl };
