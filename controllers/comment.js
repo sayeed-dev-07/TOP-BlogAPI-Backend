@@ -39,11 +39,11 @@ const editCommentControl = async (req, res, next) => {
             message: "you must provide 'content' field",
         });
     }
-    if (exist.authorId !== req.user.id) {
-        return res.status(403).json({
-            message: "You cannot modify another user's comment",
-        });
-    }
+    if (exist.authorId !== req.user.id && !req.user.admin) {
+            return res.status(403).json({
+                message: "You do not have permission to modify this comment",
+            });
+        }
     try {
         await editComment(content, commentId)
         return res.status(200).json({
@@ -62,11 +62,11 @@ const deleteCommentControl = async (req, res, next) => {
             message: `no comment found with id ${commentId}`
         })
     }
-    if (exist.authorId !== req.user.id) {
-        return res.status(403).json({
-            message: "You cannot delete another user's comment",
-        });
-    }
+   if (exist.authorId !== req.user.id && !req.user.admin) {
+            return res.status(403).json({
+                message: "You do not have permission to modify this comment",
+            });
+        }
     try {
         await deleteComment(commentId)
         return res.json({
