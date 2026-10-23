@@ -102,7 +102,7 @@ const getAllPostControl = async (req, res) => {
 }
 
 const unPublishPostControl = async (req, res, next) => {
-    const { postId } = req.params;
+   const postId = parseInt(req.params.postId);
     const exists = await postExists(postId)
     if (!exists) {
         return res.status(404).json({
@@ -119,7 +119,7 @@ const unPublishPostControl = async (req, res, next) => {
     }
 }
 const publishPostControl = async (req, res, next) => {
-    const { postId } = req.params;
+    const postId = parseInt(req.params.postId);
     const exists = await postExists(postId)
     if (!exists) {
         return res.status(404).json({
