@@ -45,7 +45,6 @@ model Comment {
   postId    Int
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
-
   @@map("comments")
 
 }
